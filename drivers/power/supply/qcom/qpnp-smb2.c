@@ -1,5 +1,4 @@
-/* Copyright (c) 2016-2019 The Linux Foundation. All rights reserved.
- * Copyright (C) 2018 XiaoMi, Inc.
+/* Copyright (c) 2016-2018 The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -473,9 +472,6 @@ static int smb2_parse_dt(struct smb2 *chip)
 
 	chg->disable_stat_sw_override = of_property_read_bool(node,
 					"qcom,disable-stat-sw-override");
-
-	chg->fcc_stepper_enable = of_property_read_bool(node,
-					"qcom,fcc-stepping-enable");
 
 	return 0;
 }
@@ -1052,6 +1048,7 @@ static int smb2_dc_get_prop(struct power_supply *psy,
 		rc = smblib_get_prop_dc_online(chg, val);
 		break;
 	case POWER_SUPPLY_PROP_INPUT_CURRENT_NOW:
+		//rc = smblib_get_prop_dc_current_now(chg, val);
 		val->intval = chg->dc_input_current_now;
 		break;
 	case POWER_SUPPLY_PROP_CURRENT_MAX:
@@ -1077,7 +1074,7 @@ static int smb2_dc_get_prop(struct power_supply *psy,
 static int smb2_set_wireless_dc_icl(struct smb_charger *chg,
 				const union power_supply_propval *val)
 {
-	if (val->intval) {
+	if(val->intval) {
 		chg->dc_adapter = val->intval;
 		vote(chg->dc_icl_votable, DCIN_USER_VOTER, true, val->intval);
 	} else
@@ -1178,9 +1175,9 @@ static int smb2_get_prop_wireless_signal(struct smb_charger *chg,
 	return rc;
 }
 
-/*****************************
+/*************************
  * WIRELESS PSY REGISTRATION *
- *****************************/
+ *************************/
 
 static enum power_supply_property smb2_wireless_props[] = {
 	POWER_SUPPLY_PROP_WIRELESS_VERSION,
@@ -1279,6 +1276,8 @@ static int smb2_init_wireless_psy(struct smb2 *chip)
 	return 0;
 }
 
+
+
 /*************************
  * BATT PSY REGISTRATION *
  *************************/
@@ -1299,7 +1298,6 @@ static enum power_supply_property smb2_batt_props[] = {
 	POWER_SUPPLY_PROP_CURRENT_NOW,
 	POWER_SUPPLY_PROP_CURRENT_QNOVO,
 	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
 	POWER_SUPPLY_PROP_TEMP,
 	POWER_SUPPLY_PROP_TECHNOLOGY,
 	POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED,
@@ -1317,7 +1315,6 @@ static enum power_supply_property smb2_batt_props[] = {
 	POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
 	POWER_SUPPLY_PROP_CHARGE_FULL,
 	POWER_SUPPLY_PROP_CYCLE_COUNT,
-	POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE,
 };
 
 static int smb2_batt_get_prop(struct power_supply *psy,
@@ -1397,10 +1394,6 @@ static int smb2_batt_get_prop(struct power_supply *psy,
 		val->intval = get_client_vote(chg->fcc_votable,
 					      BATT_PROFILE_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
-		val->intval = get_client_vote(chg->fcc_votable,
-					      FG_ESR_VOTER);
-		break;
 	case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = POWER_SUPPLY_TECHNOLOGY_LIPO;
 		break;
@@ -1434,16 +1427,9 @@ static int smb2_batt_get_prop(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_CHARGE_FULL:
 	case POWER_SUPPLY_PROP_CYCLE_COUNT:
 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+	case POWER_SUPPLY_PROP_CURRENT_NOW:
 	case POWER_SUPPLY_PROP_TEMP:
 		rc = smblib_get_prop_from_bms(chg, psp, val);
-		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
-		rc = smblib_get_prop_from_bms(chg, psp, val);
-		if (!rc)
-			val->intval *= (-1);
-		break;
-	case POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE:
-		val->intval = chg->fcc_stepper_enable;
 		break;
 	default:
 		pr_err("batt power supply prop %d not supported\n", psp);
@@ -1520,12 +1506,6 @@ static int smb2_batt_set_prop(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		chg->batt_profile_fcc_ua = val->intval;
 		vote(chg->fcc_votable, BATT_PROFILE_VOTER, true, val->intval);
-		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
-		if (val->intval)
-			vote(chg->fcc_votable, FG_ESR_VOTER, true, val->intval);
-		else
-			vote(chg->fcc_votable, FG_ESR_VOTER, false, 0);
 		break;
 	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		/* Not in ship mode as long as the device is active */
@@ -3054,6 +3034,7 @@ static struct platform_driver smb2_driver = {
 	.probe		= smb2_probe,
 	.remove		= smb2_remove,
 	.shutdown	= smb2_shutdown,
+
 };
 module_platform_driver(smb2_driver);
 

@@ -1,5 +1,4 @@
 /* Copyright (c) 2016-2018 The Linux Foundation. All rights reserved.
- * Copyright (C) 2018 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -81,10 +80,8 @@ enum print_reason {
 #define MOISTURE_VOTER			"MOISTURE_VOTER"
 #define HVDCP2_ICL_VOTER		"HVDCP2_ICL_VOTER"
 #define OV_VOTER			"OV_VOTER"
-#define FG_ESR_VOTER			"FG_ESR_VOTER"
-#define FCC_STEPPER_VOTER		"FCC_STEPPER_VOTER"
-#define DCIN_USER_VOTER			"DCIN_USER_VOTER"
-#define UNSTANDARD_QC2_VOTER		"UNSTANDARD_QC2_VOTER"
+#define DCIN_USER_VOTER                "DCIN_USER_VOTER"
+#define UNSTANDARD_QC2_VOTER			"UNSTANDARD_QC2_VOTER"
 
 #define VCONN_MAX_ATTEMPTS	3
 #define OTG_MAX_ATTEMPTS	3
@@ -94,7 +91,7 @@ enum print_reason {
 #define CC_FLOAT_WORK_START_DELAY_MS   700
 #define BATT_TEMP_CRITICAL_LOW     50
 #define BATT_TEMP_COOL_THR     150
-#define CUTOFF_VOL_THR			3400000
+#define CUTOFF_VOL_THR			3400000  //Cutoff voltage threshold
 
 /* QC2.0 voltage UV threshold 7.8V */
 #define QC2_HVDCP_VOL_UV_THR		7800000
@@ -420,8 +417,6 @@ struct smb_charger {
 	bool			report_usb_absent;
 	int			dc_input_current_now;
 	bool			disable_stat_sw_override;
-	bool			in_chg_lock;
-	bool			fcc_stepper_enable;
 
 	/* workaround flag */
 	u32			wa_flags;

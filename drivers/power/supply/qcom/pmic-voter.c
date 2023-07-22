@@ -1,5 +1,4 @@
 /* Copyright (c) 2015-2017 The Linux Foundation. All rights reserved.
- * Copyright (C) 2018 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -10,7 +9,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 #include <linux/debugfs.h>
 #include <linux/spinlock.h>
 #include <linux/errno.h>
@@ -107,7 +105,7 @@ static void vote_min(struct votable *votable, int client_id,
 	*eff_id = -EINVAL;
 	for (i = 0; i < votable->num_clients && votable->client_strs[i]; i++) {
 		if (strcmp(votable->name, "FG_WS") != 0) {
-			if (votable->votes[i].enabled)
+			if(votable->votes[i].enabled)
 				pr_info("%s: val: %d\n", votable->client_strs[i],
 							votable->votes[i].value);
 		}
@@ -180,7 +178,7 @@ static char *get_client_str(struct votable *votable, int client_id)
 	if (client_id == -EINVAL)
 		return NULL;
 
-	return votable->client_strs[client_id];
+	 return votable->client_strs[client_id];
 }
 
 void lock_votable(struct votable *votable)

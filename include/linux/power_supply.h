@@ -4,7 +4,6 @@
  *  Copyright © 2007  Anton Vorontsov <cbou@mail.ru>
  *  Copyright © 2004  Szabolcs Gyurko
  *  Copyright © 2003  Ian Molton <spyro@f2s.com>
- *  Copyright (C) 2018 XiaoMi, Inc.
  *
  *  Modified: 2004, Oct     Szabolcs Gyurko
  *
@@ -229,6 +228,7 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_HOT_TEMP,
 	POWER_SUPPLY_PROP_SYSTEM_TEMP_LEVEL,
 	POWER_SUPPLY_PROP_RESISTANCE,
+	POWER_SUPPLY_PROP_ESR,
 	POWER_SUPPLY_PROP_RESISTANCE_CAPACITIVE,
 	POWER_SUPPLY_PROP_RESISTANCE_ID, /* in Ohms */
 	POWER_SUPPLY_PROP_RESISTANCE_NOW,
@@ -312,10 +312,6 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_ESR_NOMINAL,
 	POWER_SUPPLY_PROP_SOH,
 	POWER_SUPPLY_PROP_QC_OPTI_DISABLE,
-	POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE,
-	POWER_SUPPLY_PROP_CC_SOC,
-	POWER_SUPPLY_PROP_QG_VBMS_MODE,
-	POWER_SUPPLY_PROP_REAL_CAPACITY,
 	/* Local extensions of type int64_t */
 	POWER_SUPPLY_PROP_CHARGE_COUNTER_EXT,
 	/* Properties of type `const char *' */
@@ -456,7 +452,6 @@ struct power_supply {
 	spinlock_t changed_lock;
 	bool changed;
 	bool initialized;
-	bool removing;
 	atomic_t use_cnt;
 #ifdef CONFIG_THERMAL
 	struct thermal_zone_device *tzd;

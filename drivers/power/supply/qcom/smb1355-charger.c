@@ -1,5 +1,4 @@
 /* Copyright (c) 2016-2018 The Linux Foundation. All rights reserved.
- * Copyright (C) 2018 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -601,7 +600,7 @@ static int smb1355_get_prop_health(struct smb1355 *chip, int type)
 	/* Connector-temp uses skin-temp configuration */
 	shift = (type == CONNECTOR_TEMP) ? SKIN_TEMP_SHIFT : 0;
 
-	if (chip->dt.disable_ctm)
+	if(chip->dt.disable_ctm)
 		return POWER_SUPPLY_HEALTH_COOL;
 
 	rc = smb1355_read(chip, TEMP_COMP_STATUS_REG, &temp);
@@ -1020,8 +1019,7 @@ static int smb1355_tskin_sensor_config(struct smb1355 *chip)
 		}
 
 		rc = smb1355_masked_write(chip, BATIF_C1_REG_CFG,
-					0xff,
-					0);
+					0xff, 0);
 		if (rc < 0) {
 			pr_err("Couldn't set  BATIF_CFG_SMISC_BATID rc=%d\n",
 				rc);
