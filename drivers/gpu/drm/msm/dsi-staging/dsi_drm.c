@@ -938,13 +938,24 @@ void dsi_connector_put_modes(struct drm_connector *connector,
 	dsi_display->modes = NULL;
 }
 
+struct dsi_display_mode user_mode[] = {
+	{
+	.pixel_clk_khz = (1080 + 28 + 4 + 16) * (2246 + 120 + 4 + 12) * 62 / 1000,
+	.timing.refresh_rate = 62,
+        },
+        {
+	.pixel_clk_khz = (1080 + 28 + 4 + 16) * (2246 + 120 + 4 + 12) * 64 / 1000,
+	.timing.refresh_rate = 64,
+	},
+};
+
 int dsi_connector_get_modes(struct drm_connector *connector,
 		void *display)
 {
 	u32 count = 0;
 	struct dsi_display_mode *modes = NULL;
 	struct drm_display_mode drm_mode;
-	int rc, i;
+	int rc, i,start=0;
 
 	if (sde_connector_get_panel(connector)) {
 		/*
@@ -967,11 +978,16 @@ int dsi_connector_get_modes(struct drm_connector *connector,
 		goto end;
 	}
 
-	for (i = 0; i < count; i++) {
+        for (i = 1; i <= ARRAY_SIZE(user_mode); i++) {
+                modes[i] = modes[start];
+                modes[i].pixel_clk_khz = user_mode[i-1].pixel_clk_khz;
+                modes[i].timing.refresh_rate = user_mode[i-1].timing.refresh_rate;
+        }
+	for (i = 0; i <= ARRAY_SIZE(user_mode); i++) {
 		struct drm_display_mode *m;
-
-		memset(&drm_mode, 0x0, sizeof(drm_mode));
-		dsi_convert_to_drm_mode(&modes[i], &drm_mode);
+                memset(&drm_mode, 0x0, sizeof(drm_mode));
+	        dsi_convert_to_drm_mode(&modes[i], &drm_mode);
+                pr_info("INFO....drm_modeclock[%d]..drm_refrehsrate[%d]...i[%d]...count[%d]",drm_mode.clock,drm_mode.vrefresh,i,count);
 		m = drm_mode_duplicate(connector->dev, &drm_mode);
 		if (!m) {
 			pr_err("failed to add mode %ux%u\n",
