@@ -755,6 +755,14 @@ int input_scancode_to_scalar(const struct input_keymap_entry *ke,
 }
 EXPORT_SYMBOL(input_scancode_to_scalar);
 
+bool input_device_enabled(struct input_dev *dev)
+{
+	lockdep_assert_held(&dev->mutex);
+
+	return !dev->inhibited && dev->users > 0;
+}
+EXPORT_SYMBOL_GPL(input_device_enabled);
+
 /*
  * Those routines handle the default case where no [gs]etkeycode() is
  * defined. In this case, an array indexed by the scancode is used.

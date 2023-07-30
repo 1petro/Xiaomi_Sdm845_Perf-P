@@ -187,6 +187,7 @@ struct input_dev {
 	struct input_value *vals;
 
 	bool devres_managed;
+        bool inhibited;
 };
 #define to_input_dev(d) container_of(d, struct input_dev, dev)
 
@@ -521,6 +522,8 @@ struct ff_device {
 	struct ff_effect *effects;
 	struct file *effect_owners[];
 };
+
+bool input_device_enabled(struct input_dev *dev);
 
 int input_ff_create(struct input_dev *dev, unsigned int max_effects);
 void input_ff_destroy(struct input_dev *dev);
