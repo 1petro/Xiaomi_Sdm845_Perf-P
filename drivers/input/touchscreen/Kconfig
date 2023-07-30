@@ -107,6 +107,19 @@ config TOUCHSCREEN_AR1021_I2C
 	  To compile this driver as a module, choose M here: the
 	  module will be called ar1021_i2c.
 
+#
+# Focaltech Touchscreen driver configuration
+#
+menuconfig TOUCHSCREEN_FOCALTECH_FTS
+	tristate "Focaltech FTS Touchscreen"
+	depends on I2C
+	default n
+	help
+	  Say Y here if you have Focaltech touch panel.
+	  If unsure, say N.
+
+
+
 config TOUCHSCREEN_ATMEL_MXT
 	tristate "Atmel mXT I2C Touchscreen"
 	depends on I2C

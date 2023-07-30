@@ -515,11 +515,13 @@
 		/*avdd-supply = <&pm8994_l22>;*/
 		lab-supply = <&lab_regulator>;
 		ibb-supply = <&ibb_regulator>;
-
+                reset-gpios = <&tlmm 32 GPIO_ACTIVE_LOW>;
 		focaltech,reset-gpio = <&tlmm 32 0x01>;
 		focaltech,irq-gpio = <&tlmm 31 0x02>;
 		focaltech,max-touch-number = <10>;
 		focaltech,display-coords = <0 0 1080 2246>;
+                touchscreen-size-x = <1080>;
+                touchscreen-size-y = <2246>;
 		pinctrl-names = "pmx_ts_active", "pmx_ts_suspend";
 		pinctrl-0 = <&ts_int_active &ts_reset_active>;
 		pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
