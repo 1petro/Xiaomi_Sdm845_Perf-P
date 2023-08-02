@@ -120,6 +120,9 @@ const uint16_t gesture_key_array[] = {
 };
 #endif
 
+static unsigned int nvt_fw_varient=0;
+module_param(nvt_fw_varient, uint, 0444);
+
 static uint8_t bTouchIsAwake;
 
 /*******************************************************
@@ -843,13 +846,19 @@ static int nvt_parse_dt(struct device *dev)
 static const char *nvt_get_config(struct nvt_ts_data *ts)
 {
 	int i;
-
+        bool second = 0;
 	for (i = 0; i < ts->config_array_size; i++) {
 		if ((ts->lockdown_info[0] ==
 		     ts->config_array[i].tp_vendor) &&
 		     (ts->lockdown_info[3] ==
 		     ts->config_array[i].tp_hw_version))
-			break;
+			{
+                if( nvt_fw_varient == 1 && second == 0 )  {
+                    second = 1;
+                    continue;
+                }
+    			break;
+            }
 	}
 
 	if (i >= ts->config_array_size) {
