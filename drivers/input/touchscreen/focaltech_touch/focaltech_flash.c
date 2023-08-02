@@ -69,6 +69,9 @@ struct upgrade_func *upgrade_func_list[] = {
 	&upgrade_func_ft8719,
 };
 
+static unsigned int fts_fw_varient=0;
+module_param(fts_fw_varient, uint, 0444);
+
 struct fts_upgrade *fwupgrade;
 
 /*****************************************************************************
@@ -1725,6 +1728,11 @@ static int fts_fwupg_get_fw_file(struct fts_ts_data *ts_data)
 		return -ENODATA;
 	}
 #endif
+
+        if(fts_fw_varient){
+                FTS_INFO(".....fw_varient set new fw......");
+                fw = &fw_list[1];
+        }else{FTS_INFO(".....using default fw......");}
 
 	if (upg) {
 		upg->fw = fw->fw_file;
