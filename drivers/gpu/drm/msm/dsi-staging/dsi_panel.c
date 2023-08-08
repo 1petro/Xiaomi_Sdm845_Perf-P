@@ -3906,6 +3906,9 @@ int dsi_panel_get_mode(struct dsi_panel *panel,
 			goto parse_fail;
 		}
 
+                //backup default refresh mode which set to  the preferred mode
+                mode->default_max_refresh_rate = mode->timing.refresh_rate;
+
 		rc = dsi_panel_parse_dsc_params(mode, child_np);
 		if (rc) {
 			pr_err("failed to parse dsc params, rc=%d\n", rc);
@@ -3936,6 +3939,8 @@ int dsi_panel_get_mode(struct dsi_panel *panel,
 			"failed to parse panel phy timings, rc=%d\n", rc);
 			goto parse_fail;
 		}
+
+                mode->default_max_pixel_clk_khz = mode->pixel_clk_khz;
 
 		rc = dsi_panel_parse_partial_update_caps(mode, child_np);
 		if (rc)
