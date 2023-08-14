@@ -4,12 +4,12 @@
     <string name="selinux_status_disabled">Išjungta</string>
     <string name="selinux_status_enforcing">Enforcing</string>
     <string name="selinux_status_unknown">Nežinomas</string>
-    <string name="superuser">Supernaudotojas</string>
+    <string name="superuser">Supernaudotojai</string>
     <string name="module_failed_to_enable">Nepavyko įjungti modulio: %s</string>
     <string name="module_failed_to_disable">Nepavyko išjungti modulio: %s</string>
     <string name="selinux_status_permissive">Permissive</string>
     <string name="module_empty">Nėra įdiegtų modulių</string>
-    <string name="module">Modulis</string>
+    <string name="module">Moduliai</string>
     <string name="reboot_userspace">Perkrovimas neišjungus</string>
     <string name="reboot_recovery">Perkrauti į atkūrimo rėžimą</string>
     <string name="reboot_bootloader">Perkrauti į įkrovos tvarkyklę</string>
@@ -78,5 +78,4 @@
     <string name="home_support_content">KernelSU yra ir visada bus nemokamas ir atvirojo kodo. Tačiau galite parodyti, kad jums rūpi, paaukodami mums.</string>
     <string name="failed_to_update_app_profile">Nepavyko atnaujinti programos profilio %s</string>
     <string name="settings_umount_modules_default_summary">Visuotinė numatytoji „Modulių atjungimo“ reikšmė programų profiliuose. Jei įjungta, ji pašalins visus sistemos modulio pakeitimus programoms, kurios neturi profilio.</string>
-    <string name="require_kernel_version">Dabartinė branduolio versija %d yra per žema, kad tvarkyklė tinkamai veiktų. Atnaujinkite į %d ar naujesnę versiją!</string>
 </resources>
