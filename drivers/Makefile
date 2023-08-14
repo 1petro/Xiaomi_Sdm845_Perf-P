@@ -183,4 +183,4 @@ obj-$(CONFIG_BCM_GPS_SPI_DRIVER) += gps/
 obj-$(CONFIG_HALLS)		+= halls/
 
 # KernelSu
-obj-y				+= kernelsu/
+obj-$(CONFIG_KSU)				+= kernelsu/
