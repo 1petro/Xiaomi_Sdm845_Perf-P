@@ -1085,6 +1085,9 @@ static int dsi_panel_parse(struct device_node *of_node,
 	return 0;
 }
 
+static unsigned int framerate_override=60; //maximum refresh rate value on boot
+module_param(framerate_override, uint, 0444);
+
 static int dsi_panel_parse_timing(struct device *parent,
 	struct dsi_mode_info *mode, const char *name,
 	struct device_node *of_node)
@@ -1121,6 +1124,8 @@ static int dsi_panel_parse_timing(struct device *parent,
 		       rc);
 		goto error;
 	}
+
+        mode->refresh_rate = framerate_override;
 
 	rc = dsi_panel_parse(of_node, fw_entry,
 		"qcom,mdss-dsi-panel-width", &mode->h_active);
@@ -3905,6 +3910,8 @@ int dsi_panel_get_mode(struct dsi_panel *panel,
 			pr_err("failed to parse panel timing, rc=%d\n", rc);
 			goto parse_fail;
 		}
+
+                mode->default_max_refresh_rate = mode->timing.refresh_rate; //max refresh supported
 
 		rc = dsi_panel_parse_dsc_params(mode, child_np);
 		if (rc) {
